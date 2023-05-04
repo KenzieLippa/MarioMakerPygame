@@ -1,4 +1,5 @@
 import pygame
+from pygame.image import load
 from settings import *
 from editor import Editor
 
@@ -12,6 +13,11 @@ class Main:
         #needs its own event loop, need to check keyboard input for both, have also a third event loop from main
         #so we not gonna do a main loop, only have one open at the same time
         self.editor = Editor() #makes a new instance thingy
+
+        #need a cursor
+        surf = load('graphics/cursors/mouse.png').convert_alpha()
+        cursor = pygame.cursors.Cursor((0,0),surf) #first arg is clickable area, origin
+        pygame.mouse.set_cursor(cursor)
 
 #we have a main and then we need a editor mode and a level mode
 #need to figure out how to switch between them
