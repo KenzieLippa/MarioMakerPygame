@@ -3,7 +3,7 @@ from pygame.math import Vector2 as vector
 from pygame.mouse import get_pressed as mouse_buttons
 from pygame.mouse import get_pos as mouse_pos
 from settings import *
-
+from menu import Menu
 #origin is vector everything is relative to (x,y) can run later on
 #tiles are always relative to the origin
 #only have to move one point, everything else follows
@@ -26,6 +26,9 @@ class Editor:
 
         #selection
         self.selection_index = 2
+
+        #menu
+        self.menu = Menu()
 
 #input
     def event_loop(self):
@@ -78,9 +81,9 @@ class Editor:
                 # else:
                 #     self.selection_index = 18
         self.selection_index = max(2, min(self.selection_index, 18))
-        print(self.selection_index)
+        #print(self.selection_index)
 
-        print(self.selection_index)
+       # print(self.selection_index)
     #drawing 
     def draw_tile_lines(self):
         #draw lots of grid lines relative to the origin
