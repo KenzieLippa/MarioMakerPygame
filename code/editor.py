@@ -50,12 +50,12 @@ class Editor:
             self.pan_active = True
             self.pan_offset = vector(mouse_pos()) - self.origin
             #gets distance between mouse and self origin
-            print('right mouse')
+           # print('right mouse')
         if not mouse_buttons()[2]:
             self.pan_active = False
 
         if event.type == pygame.MOUSEWHEEL:
-            print(event.y) #is up and down movement 
+            #print(event.y) #is up and down movement 
             #gets all keys currently being pressed
             if pygame.key.get_pressed()[pygame.K_LCTRL]:
                 self.origin.y -= event.y * 50
@@ -116,6 +116,6 @@ class Editor:
         self.display_surface.fill('white') # to tell if we are here
         self.draw_tile_lines()
         pygame.draw.circle(self.display_surface, 'red', self.origin, 10)
-
+        self.menu.display()
 
     #will be creating a menu 
