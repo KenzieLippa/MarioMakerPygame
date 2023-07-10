@@ -41,6 +41,7 @@ class Editor:
                 sys.exit()
             self.pan_input(event)
             self.selection_hotkeys(event) #call the method
+            self.menu_click(event)
 
            # self.editor.run(dt)
             #pygame.display.update()
@@ -107,6 +108,11 @@ class Editor:
 
         self.display_surface.blit(self.support_line_surf,(0,0)) #coverst the window
 
+    def menu_click(self,event):
+        if event.type == pygame.MOUSEBUTTONDOWN and self.menu.rect.collidepoint(mouse_pos()):
+            self.selection_index = self.menu.click(mouse_pos(), mouse_buttons())
+
+
     def run(self, dt):
 
         
@@ -117,5 +123,6 @@ class Editor:
         self.draw_tile_lines()
         pygame.draw.circle(self.display_surface, 'red', self.origin, 10)
         self.menu.display()
+        print(self.selection_index)
 
     #will be creating a menu 

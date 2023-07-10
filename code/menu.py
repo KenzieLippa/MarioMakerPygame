@@ -51,12 +51,24 @@ class Menu:
         Button(self.enemy_button_rect, self.buttons, self.menu_surfs['enemy'])
         Button(self.palm_button_rect, self.buttons, self.menu_surfs['palm fg'], self.menu_surfs['palm bg'])
 
+    def click(self, mouse_pos, mouse_button):
+        for sprite in self.buttons:
+            if sprite.rect.collidepoint(mouse_pos):
+                if mouse_button[0] and pygame.key.get_pressed()[pygame.K_LALT]:
+                    #toggle but if it has no alt then will always be true
+                    sprite.main_active = not sprite.main_active if sprite.items['alt'] else True #but only if has alt sprites
+                if mouse_button[2]: #if right click want to select
+                    pass
+                return sprite.get_id() #return what the id is
+
     def display(self):
         #pygame.draw.rect(self.display_surface, 'red', self.rect)
-        pygame.draw.rect(self.display_surface, 'green', self.tile_button_rect)
-        pygame.draw.rect(self.display_surface, 'blue', self.coin_button_rect)
-        pygame.draw.rect(self.display_surface, 'yellow', self.palm_button_rect)
-        pygame.draw.rect(self.display_surface, 'purple', self.enemy_button_rect)
+        # pygame.draw.rect(self.display_surface, 'green', self.tile_button_rect)
+        # pygame.draw.rect(self.display_surface, 'blue', self.coin_button_rect)
+        # pygame.draw.rect(self.display_surface, 'yellow', self.palm_button_rect)
+        # pygame.draw.rect(self.display_surface, 'purple', self.enemy_button_rect)
+        self.buttons.update()
+        self.buttons.draw(self.display_surface)
 
 class Button(pygame.sprite.Sprite):
     #inherits from the sprite class
@@ -70,3 +82,21 @@ class Button(pygame.sprite.Sprite):
         self.index = 0 #which item we are on
         self.main_active = True
         #will need to import a bunch of shit
+
+    def get_id(self):
+        #getting a key
+        return self.items['main' if self.main_active else 'alt'][self.index][0] #either selection items or alt
+    
+    def update(self):
+        self.image.fill(BUTTON_BG_COLOR)
+        #from items or other items
+        surf = self.items['main' if self.main_active else 'alt'][self.index][1] #only pick th graphic
+        #returns a touple with index of the graphic and then the graphic
+        #print(surf)
+        #using local instead of global to setup the rect
+        rect  = surf.get_rect(center = (self.rect.width/2, self.rect.height/2) ) # dont use self.rect.center
+        #want to go half the width and half the width of the center
+        #would get the global instead which wont work because of the shrink
+        self.image.blit(surf, rect)
+
+
