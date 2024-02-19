@@ -39,6 +39,8 @@ class Editor:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+          #  print("move the screen")
+            #print(event.type)
             self.pan_input(event)
             self.selection_hotkeys(event) #call the method
             self.menu_click(event)
@@ -46,9 +48,11 @@ class Editor:
            # self.editor.run(dt)
             #pygame.display.update()
     def pan_input(self, event):
+       # print("Pan the input plzz")
         #middle mouse button pressed / released (maybe do left click?)
         if event.type == pygame.MOUSEBUTTONDOWN and mouse_buttons()[2]:
             self.pan_active = True
+            #print("func is being called")
             self.pan_offset = vector(mouse_pos()) - self.origin
             #gets distance between mouse and self origin
            # print('right mouse')
@@ -66,6 +70,7 @@ class Editor:
         #panning update
         if self.pan_active:
             self.origin = vector(mouse_pos()) - self.pan_offset
+            print("we are attempting to move the screen")
 
     def selection_hotkeys(self, event):
         if event.type == pygame.KEYDOWN:
@@ -86,6 +91,10 @@ class Editor:
 
        # print(self.selection_index)
     #drawing 
+    def menu_click(self,event):
+        if event.type == pygame.MOUSEBUTTONDOWN and self.menu.rect.collidepoint(mouse_pos()):
+            self.selection_index = self.menu.click(mouse_pos(), mouse_buttons())
+
     def draw_tile_lines(self):
         #draw lots of grid lines relative to the origin
         cols = WINDOW_WIDTH//TILE_SIZE #tile size has to stay at 64 with th ones we using
@@ -108,10 +117,7 @@ class Editor:
 
         self.display_surface.blit(self.support_line_surf,(0,0)) #coverst the window
 
-    def menu_click(self,event):
-        if event.type == pygame.MOUSEBUTTONDOWN and self.menu.rect.collidepoint(mouse_pos()):
-            self.selection_index = self.menu.click(mouse_pos(), mouse_buttons())
-
+    
 
     def run(self, dt):
 
@@ -122,7 +128,7 @@ class Editor:
         self.display_surface.fill('white') # to tell if we are here
         self.draw_tile_lines()
         pygame.draw.circle(self.display_surface, 'red', self.origin, 10)
-        self.menu.display()
-        print(self.selection_index)
+        self.menu.display(self.selection_index)
+       # print(self.selection_index)
 
     #will be creating a menu 
