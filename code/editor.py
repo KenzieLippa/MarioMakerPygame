@@ -70,7 +70,7 @@ class Editor:
         #panning update
         if self.pan_active:
             self.origin = vector(mouse_pos()) - self.pan_offset
-            print("we are attempting to move the screen")
+            #print("we are attempting to move the screen")
 
     def selection_hotkeys(self, event):
         if event.type == pygame.KEYDOWN:
@@ -125,10 +125,10 @@ class Editor:
         self.event_loop() #call while we run
 
         #drawing
-        self.display_surface.fill('white') # to tell if we are here
+        self.display_surface.fill('gray') # to tell if we are here
         self.draw_tile_lines()
         pygame.draw.circle(self.display_surface, 'red', self.origin, 10)
         self.menu.display(self.selection_index)
-       # print(self.selection_index)
+        #print(self.selection_index)
 
     #will be creating a menu 

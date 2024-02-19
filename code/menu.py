@@ -43,20 +43,25 @@ class Menu:
 	def click(self, mouse_pos, mouse_button):
 		for sprite in self.buttons:
 			if sprite.rect.collidepoint(mouse_pos):
-				if mouse_button[1]: # middle mouse click
+				if mouse_button[0] and pygame.key.get_pressed()[pygame.K_LALT]: # middle mouse click
+					#print("pressed the alt key")
 					if sprite.items['alt']:
+						#print("should change")
 						sprite.main_active = not sprite.main_active 
 				if mouse_button[2]: # right click
 					sprite.switch()
 				return sprite.get_id()
 
 	def highlight_indicator(self, index):
+		#highlight currently selected button
+		#what is currently selected rectangle, get editor data and check current index, then check one specific thing
 		if EDITOR_DATA[index]['menu'] == 'terrain':
 			pygame.draw.rect(self.display_surface, BUTTON_LINE_COLOR, self.tile_button_rect.inflate(4,4),5,4)
 		if EDITOR_DATA[index]['menu'] == 'coin':
 			pygame.draw.rect(self.display_surface, BUTTON_LINE_COLOR, self.coin_button_rect.inflate(4,4),5,4)
 		if EDITOR_DATA[index]['menu'] == 'enemy':
 			pygame.draw.rect(self.display_surface, BUTTON_LINE_COLOR, self.enemy_button_rect.inflate(4,4),5,4)
+		#check to see if it is in a list
 		if EDITOR_DATA[index]['menu'] in ('palm bg', 'palm fg'):
 			pygame.draw.rect(self.display_surface, BUTTON_LINE_COLOR, self.palm_button_rect.inflate(4,4),5,4)
 
@@ -80,7 +85,9 @@ class Button(pygame.sprite.Sprite):
 		return self.items['main' if self.main_active else 'alt'][self.index][0]
 
 	def switch(self):
+		#move the index forward
 		self.index += 1
+		#make sure it stays in bounds
 		self.index = 0 if self.index >= len(self.items['main' if self.main_active else 'alt']) else self.index
 
 	def update(self):
