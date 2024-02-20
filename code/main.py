@@ -19,14 +19,14 @@ class Main:
         surf = load('graphics/cursors/mouse.png').convert_alpha()
         cursor = pygame.cursors.Cursor((0,0),surf) #first arg is clickable area, origin
         pygame.mouse.set_cursor(cursor)
-    alphabet = {
-    "a":{
-        "s":{
-            "s": "ass"
-        }
-    }
-}
-    print(alphabet["a"]["s"]["s"])
+#     alphabet = {
+#     "a":{
+#         "s":{
+#             "s": "ass"
+#         }
+#     }
+# }
+#     print(alphabet["a"]["s"]["s"])
 
 #we have a main and then we need a editor mode and a level mode
 #need to figure out how to switch between them
