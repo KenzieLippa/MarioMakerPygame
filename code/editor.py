@@ -11,6 +11,7 @@ class Editor:
     def __init__(self) -> None:
         #main setup
         self.display_surface = pygame.display.get_surface()
+        self.canvas_data = {}
 
         #navigation
         self.origin = vector()
@@ -26,10 +27,12 @@ class Editor:
 
         #selection
         self.selection_index = 2
+        self.last_selected_cell = None
 
         #menu
         self.menu = Menu()
     #get the current cell
+    #support
     def get_current_cell(self):
         distance_to_origin = vector(mouse_pos()) - self.origin
         #print(distance_to_origin)]
@@ -42,7 +45,8 @@ class Editor:
             row = int(distance_to_origin.y /TILE_SIZE)
         else:
             row = int(distance_to_origin.y /TILE_SIZE) -1
-        print((col,row))
+       # print((col,row))
+        return col, row
 #input
     def event_loop(self):
         #event loop 
@@ -115,7 +119,18 @@ class Editor:
     def canvas_add(self):
         #checking if we left click and not on the menu
         if mouse_buttons()[0] and not self.menu.rect.collidepoint(mouse_pos()):
-            self.get_current_cell()
+            current_cell = self.get_current_cell()
+            if current_cell != self.last_selected_cell:
+            #if this is here or not
+                if current_cell in self.canvas_data:
+                    pass
+                else:
+                    #make new entry
+                    self.canvas_data[current_cell] = CanvasTile(self.selection_index)
+                self.last_selected_cell = current_cell
+           #print(self.canvas_data)
+    
+    #drawing
     def draw_tile_lines(self):
         #draw lots of grid lines relative to the origin
         cols = WINDOW_WIDTH//TILE_SIZE #tile size has to stay at 64 with th ones we using
@@ -154,3 +169,31 @@ class Editor:
         #print(self.selection_index)
 
     #will be creating a menu 
+
+ #class that contains all the tile information for every cell           
+class CanvasTile:
+    def __init__(self, tile_id):
+        
+        #terrain
+        self.has_terrain = False
+        #basically keeps track of if there are neighbors for drawing the grass
+        self.terrain_neighbors = []
+
+        self.has_water = False
+        #for water animations
+        self.water_on_top = False
+
+        #coin
+        self.coin = None #can only have one type of coin here
+
+        #enemy
+        self.enemy = None
+
+        #objects
+        self.objects = []
+
+        self.add_id(tile_id)
+
+    def add_id(self, tile_id):
+        options = {key: value['style'] for key, value in EDITOR_DATA.items()}
+        print(options)
